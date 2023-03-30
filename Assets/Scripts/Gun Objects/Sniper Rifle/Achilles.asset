@@ -10,13 +10,13 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 1728993636deff34787115b26a278c32, type: 3}
-  m_Name: Falcon Pistol
+  m_Name: Achilles
   m_EditorClassIdentifier: 
-  name: Falcon 3
-  damage: 25
-  maxDistance: 150
-  currentAmmo: 8
+  name: Achilles
+  damage: 40
+  maxDistance: 500
+  currentAmmo: 5
   magSize: 8
-  fireRate: 1000
-  reloadTime: 2
+  fireRate: 250
+  reloadTime: 2.5
   reloading: 1
