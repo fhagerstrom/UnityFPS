@@ -7,7 +7,6 @@ public class MoveCamera : MonoBehaviour
 
     [SerializeField] Transform cameraPosition = null;
 
-
     // Update is called once per frame
     void Update()
     {

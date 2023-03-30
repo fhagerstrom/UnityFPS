@@ -6,6 +6,7 @@ public class PlayerMovement : MonoBehaviour
 {
     // Initialize RigidBody component
     Rigidbody rb;
+    RaycastHit slopeHit;
 
     [SerializeField] Transform orientation;
 
@@ -20,6 +21,7 @@ public class PlayerMovement : MonoBehaviour
     float verticalMovement;
 
     Vector3 moveDirection;
+    Vector3 slopeMoveDirection;
 
     // KEYBINDS
     [SerializeField] KeyCode crouchKey = KeyCode.LeftControl;
@@ -31,12 +33,14 @@ public class PlayerMovement : MonoBehaviour
     private float startYScale;
 
     [Header("Ground Check")]
-    public float playerHeight = 2.0f;
+    [SerializeField] LayerMask groundMask;
     bool isGrounded;
+    public float playerHeight = 2.0f;
+    float groundDistance = 0.4f;
 
     [Header("Drag")]
-    float groundDrag = 5.0f;
-    float airDrag = 2.0f;
+    float groundDrag = 6.0f;
+    float airDrag = 1.0f;
 
 
     // Enum for movement state
@@ -68,6 +72,23 @@ public class PlayerMovement : MonoBehaviour
         }
     }
 
+    private bool OnSlope()
+    {
+        if(Physics.Raycast(transform.position, Vector3.down, out slopeHit, (playerHeight / 2) + 0.5f))
+        {
+            if(slopeHit.normal != Vector3.up)
+            {
+                return true;
+            }
+            else
+            {
+                return false;
+            }
+        }
+
+        return false;
+    }
+
     private void Start()
     {
         rb = GetComponent<Rigidbody>();
@@ -78,12 +99,13 @@ public class PlayerMovement : MonoBehaviour
 
     private void Update()
     {
+        isGrounded = Physics.CheckSphere(transform.position - new Vector3(0, 1, 0), groundDistance, groundMask);
+
         PlayerInput();
         ControlDrag();
         StateHandler();
 
-        isGrounded = Physics.Raycast(transform.position, Vector3.down, (playerHeight / 2) + 0.1f);
-        // print(isGrounded);
+        slopeMoveDirection = Vector3.ProjectOnPlane(moveDirection, slopeHit.normal);
     }
 
     void PlayerInput()
@@ -127,11 +149,19 @@ public class PlayerMovement : MonoBehaviour
 
     void MovePlayer()
     {
-        if(isGrounded)
+        // Moving on "flat" surfaces
+        if(isGrounded && !OnSlope())
         {
             rb.AddForce(moveDirection.normalized * moveSpeed * movementMultiplier, ForceMode.Acceleration);
         }
 
+        // Moving on slopes
+        else if (isGrounded && OnSlope())
+        {
+            rb.AddForce(slopeMoveDirection.normalized * moveSpeed * movementMultiplier, ForceMode.Acceleration);
+        }
+
+        // Moving in the air
         else if(!isGrounded)
         {
             rb.AddForce(moveDirection.normalized * moveSpeed * movementMultiplier * airMultiplier, ForceMode.Acceleration);
