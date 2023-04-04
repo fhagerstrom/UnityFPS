@@ -15,8 +15,8 @@ MonoBehaviour:
   name: Achilles
   damage: 40
   maxDistance: 500
-  currentAmmo: 5
+  currentAmmo: 0
   magSize: 8
-  fireRate: 250
+  fireRate: 150
   reloadTime: 2.5
-  reloading: 1
+  reloading: 0

@@ -51,7 +51,6 @@ public class Gun : MonoBehaviour
                     IDamageable damageable = hitInfo.transform.GetComponent<IDamageable>();
                     damageable?.TakeDamage(gunData.damage);
                 }
-
                 gunData.currentAmmo--;
                 timeSinceLastShot = 0;
                 // OnGunShot();

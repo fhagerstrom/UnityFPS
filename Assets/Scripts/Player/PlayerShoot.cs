@@ -9,6 +9,7 @@ public class PlayerShoot : MonoBehaviour
     // KEYBINDS
     [SerializeField] KeyCode fireKey = KeyCode.Mouse0;
     [SerializeField] KeyCode reloadKey = KeyCode.R;
+    [SerializeField] AudioSource weaponSfx;
 
     public static Action shootInput;
     public static Action reloadInput;
@@ -18,6 +19,7 @@ public class PlayerShoot : MonoBehaviour
         if(Input.GetKeyDown(fireKey)) 
         {
             shootInput?.Invoke();
+            weaponSfx.Play();
         }
 
         if (Input.GetKeyDown(reloadKey))
