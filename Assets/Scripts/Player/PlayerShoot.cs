@@ -9,7 +9,9 @@ public class PlayerShoot : MonoBehaviour
     // KEYBINDS
     [SerializeField] KeyCode fireKey = KeyCode.Mouse0;
     [SerializeField] KeyCode reloadKey = KeyCode.R;
-    [SerializeField] AudioSource weaponSfx;
+    [SerializeField] AudioSource silencedPistolSfx;
+    [SerializeField] AudioSource sniperRifleSfx;
+    [SerializeField] WeaponSwitch whichWeapon;
 
     public static Action shootInput;
     public static Action reloadInput;
@@ -19,7 +21,11 @@ public class PlayerShoot : MonoBehaviour
         if(Input.GetKeyDown(fireKey)) 
         {
             shootInput?.Invoke();
-            weaponSfx.Play();
+            if (whichWeapon.selectedWeapon == 0) // If the pistol is chosen...
+                silencedPistolSfx.Play();
+
+            else if(whichWeapon.selectedWeapon == 1) // If the sniper rifle is chosen...
+                sniperRifleSfx.Play();
         }
 
         if (Input.GetKeyDown(reloadKey))

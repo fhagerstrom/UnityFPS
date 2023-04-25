@@ -14,7 +14,7 @@ public class WeaponSwitch : MonoBehaviour
     [Header("Settings")]
     [SerializeField] private float switchTime;
 
-    private int selectedWeapon;
+    public int selectedWeapon; // Public so that we can alternate sound effects between different weapons.
     private float timeSinceLastSwitch;
 
     private void Start()
